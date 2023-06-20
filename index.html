@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Gráfico de Temperatura</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+	<canvas id="canvas">
+		<p>Seu navegador não suporta o canvas.</p>
+	</canvas>
+
+	<script>
+		// Dados iniciais para exemplificação
+		let temperaturas = []
+		let labels = []
+		let qtd = 1
+
+		const canvas = document.querySelector('#canvas')
+		const ctx = canvas.getContext('2d')
+		const chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: labels,
+				datasets: [{
+					label: 'Temperatura',
+					data: temperaturas,
+					borderColor: 'blue',
+					fill: true
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: false
+					}
+				}
+			}
+		});
+
+		function updateChart() {
+
+			if (labels.length > 30)
+				labels.shift()
+			if (temperaturas.length > 30)
+				temperaturas.shift();
+			
+			labels.push(qtd)
+			qtd++
+
+
+			const nova_temp = Math.random() * 1	 + 35.5;
+			temperaturas.push(nova_temp);
+
+
+			// Atualiza os dados do gráfico
+			chart.data.labels = labels
+			chart.data.datasets[0].data = temperaturas;
+			chart.update();
+		}
+
+		setInterval(updateChart, 500);
+	</script>
+</body>
+
+</html>
